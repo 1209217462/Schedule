@@ -37,8 +37,11 @@
                 <p><input type="text"  placeholder="用户名" name="username"/></p>
                 <p><input type="password"  placeholder="密码" name="password"/></p>
                 <button  type="submit">登录</button>
-                <a href="regist.html">注册</a>
             </form>
+              <form action="/gotoregist" method="get">
+                  <button  type="submit">注册</button>
+              </form>
+              <p id="isback" hidden>{{isback}}</p>
           </fieldset>
         </div>
 </body>  

@@ -52,8 +52,9 @@ def login():
             print('go to show')
             # return redirect(url_for('show'))
             return redirect(url_for('show'))
-    else:
-        return render_template('login.html', isback=1)
+        else:
+            print('return ....')
+            return render_template('login.html', isback=1)
 
 @app.route("/show",methods=["GET"])
 def show():
@@ -61,21 +62,15 @@ def show():
         print('show ...')
         scheduler.print_jobs()
         print(session['username'])
-        # db.session.refresh(RecordList)
-        # RecordList= Record.query.filter_by(username=session['username']).all()
-        # list = db.session.query(Record).filter_by(username=session['username']).all()
         sql = 'select * from record where username = \''+session['username']+'\''
         print(sql)
         cur = conn.cursor()  # 使用cursor()方法获取操作游标
         try:
             cur.execute(sql)  # 执行sql语句
             results = cur.fetchall()
-            # cur.close()
-            # conn.close()
             conn.commit()
         except:
             print("Error: unable to fecth data")
-
         return render_template("main.html",username=session['username'],RecordList=results)
     else:
         print('logined is false')
@@ -83,13 +78,10 @@ def show():
 
 @app.route('/delete/<int:id>')
 def deleteRecord(id):
-    # record = Record.query.filter_by(id=id).first_or_404()
     print('I will delete No.%s record' %id)
-    # db.session.delete(record)
     db.session.query(Record).filter_by(id=id).delete(synchronize_session=False)
     db.session.commit()
     db.session.flush()
-    flash('You have delete a record')
     return redirect(url_for('show'))
 
 
@@ -106,7 +98,7 @@ def deleteRecord(id):
 
 def doJob(to_list, content):
     print("send....")
-    MyMail.send_mail(to_list, content)
+    MyMail.send_mail([to_list], content)
 
 @app.route('/add',methods=['POST'])
 def addRecord():
@@ -114,19 +106,34 @@ def addRecord():
         print('I will add record in '+session['username'])
         theDatetime=request.form['theDatetime']
         content=request.form['content']
-        #生成待插入记录的对象
+        #生成待插入记录的对象并进行插入
         record=Record(username=session['username'],content=content,state=0,timing=theDatetime)
         db.session.add(record)
         db.session.commit()
-        print('the type of thedatetime is :')
-        print(type(theDatetime))
+        #获取datetime进行格式化
         print(theDatetime)
         d=datetime.strptime(theDatetime,"%Y-%m-%dT%H:%M")
-        # theDatetime.replace("T","t")
         print(d)
         scheduler.add_job(doJob,'date',run_date=d,args=[session['username'],content])
-    flash('You have add a record')
     return redirect(url_for('show'))
+
+@app.route('/gotoregist',methods=['GET'])
+def gotoregist():
+    return render_template("regist.html")
+
+@app.route('/regist',methods=['POST'])
+def regist():
+    print('I will add a user ')
+    u=request.form['rUsername']
+    p=request.form['rPassword']
+    #生成待插入记录的对象并进行插入
+    user=User(username=u,password=p)
+    db.session.add(user)
+    db.session.commit()
+    print('注册成功！')
+    print(url_for('login'))
+    # return redirect(url_for('login'))
+    return render_template("login.html")
 #插入记录
 # record=Record('1209217462@qq.com','起床',0,'2017-06-03 22:00:00')
 # db.session.add(record)

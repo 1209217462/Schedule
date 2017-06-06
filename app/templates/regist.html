@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>regist</title>
+     <script>
+        function validateForm() {
+            var u = document.forms["registForm"]["rUsername"].value;
+            var p = document.forms["registForm"]["rPassword"].value;
+            if (u == null || u == "" || p == null || p == "" ) {
+                window.alert("输入完整信息！");
+                return false;
+            }
+        }
+     </script>
+</head>
+<body>
+<h1>注册</h1>
+    <div class="wrap">
+        <form name="registForm" action="/regist" method="post" onsubmit="return validateForm()">
+            <p>用户名：<input name="rUsername" type="text" placeholder="邮箱号" ></p>
+            <>密码：<input name="rPassword" type="text" ></p>
+            <input type="submit" value="注册">
+        </form>
+    </div>
+</body>
+</html>
