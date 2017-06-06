@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css" rel="stylesheet">
+        .wrap{margin:0 auto;width:400px;}
+        .wrap2{margin:0 auto;}
+    </style>
+     <script>
+        function validateForm(){
+          var d=document.forms["addForm"]["theDatetime"].value;
+          if (d==null  || d=="") {
+            window.alert("日期不能为空！重新输入");
+            return false;
+          }
+            var now=new Date();
+            d=Date.parse(d);
+            if (d<=now){
+                alert("该日期已过！重新输入");
+                return false;
+            }
+        }
+        function isExpire(timing) {
+            var now=new Date();
+            var t=Date.parse(timing);
+            if (t>now){
+                return "未到期";
+            }
+            else {
+                return "已到期";
+            }
+        }
+    </script>
+</head>
+<body>
+    <h1>hello,{{ username }}</h1>
+{#    添加记录#}
+    <div class="wrap">
+        <form name="addForm" action="/add" method="post" onsubmit="return validateForm()">
+            <p>时间：<input name="theDatetime" type="datetime-local"></p>
+            <p>内容：<input name="content" type="text"
+            value="你有一条提醒"
+            onfocus='if(this.value=="你有一条提醒"){this.value="";};'
+            onblur='if(this.value==""){this.value="你有一条提醒";};'></p>
+            <input type="submit" value="提交待办事项">
+        </form>
+    </div>
+    <hr>
+
+{#显示列表#}
+<div class="wrap2">
+    <table border="1">
+        <thead>
+            <th >No</th>
+            <th >事项</th>
+    {#        <th >创建时间</th>#}
+            <th >设定时间</th>
+            <th style="font-size:10px;" >点击查看是否到期</th>
+            <th >操作</th>
+        </thead>
+        <tbody>
+            {% for r in RecordList %}
+                <!-- tr -->
+    {#            {% if todo.status %}<tr>#}
+    {#            {% else %} <tr > #}
+    {#            {% endif %}#}
+                <tr>
+                    <td>{{ loop.index }}</td>
+                    <td>{{ r[2] }}</td>
+    {#                <td>{{ r.create_time }}</td>#}
+                    <td>{{ r[3] }}</td>
+
+                    <td >
+                        <input type="text" style="text-align:center;"  onfocus='this.value=isExpire()'>
+{#                        {% if r[4]%}#}
+{#                            已到期#}
+{#                        {% else %}#}
+{#                            未到期#}
+{#                        {% endif %}#}
+                    </td>
+
+                    <td>
+                        <a href="{{ url_for('deleteRecord',id=r[0]) }}" role="button">删除</a>
+    {#                    <a href="{{ url_for('deleteRecord',id=r.id) }}" role="button">删除</a>#}
+    {#                    {% if r.state %}#}
+    {#                    <a href="{{ url_for('deleteRecord', id=todo.id) }}" class="btn btn-danger" role ="button">删除</a>#}
+    {#                    {% else %}#}
+    {#                    <a href="{{ url_for('changeRecord', id=todo.id) }}" class="btn btn-success" role ="button">修改</a>#}
+    {#                    {% endif %}#}
+                    </td>
+
+                </tr>
+            {% endfor %}
+
+        </tbody>
+    </table>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+</html>
+
+{#<html>#}
+{#<head></head>#}
+{#<body>#}
+{#    <h1>hello,{{ username }}</h1>#}
+{#</body>#}
+{#</html>#}

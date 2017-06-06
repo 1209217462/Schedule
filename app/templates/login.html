@@ -1,0 +1,45 @@
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Login</title>
+{#    <link rel="stylesheet" type="text/css" href="../static/Login.css"/>#}
+    <style>
+        body{ text-align:center}
+        .cen{ margin:0 auto; width:800px; height:400px; border:1px solid #F00}
+    </style>
+    <style type="text/css" rel="stylesheet">
+        .wrap{margin:0 auto;width:400px;}
+    </style>
+</head>
+<head>
+    <script>
+        function validateForm(){
+          var u=document.forms["myForm"]["username"].value;
+          var p=document.forms["myForm"]["password"].value;
+          if (u==null || p==null || u=="" || p=="") {
+            window.alert("完整输入用户名和密码");
+            return false;
+          }
+        }
+        function isBack() {
+            var isback=document.getElementById("isback").innerText;
+            if (isback==1)
+                window.alert("用户名或密码错误!");
+        }
+    </script>
+</head>  
+<body onload="isBack()">
+        <div class="wrap">
+            <img src="../static/clock.jpg" alt="some_text">
+          <h1 align="center">日程管理</h1>
+          <fieldset>
+            <form name="myForm" action="/login" method="post" onsubmit="return validateForm()">
+                <p><input type="text"  placeholder="用户名" name="username"/></p>
+                <p><input type="password"  placeholder="密码" name="password"/></p>
+                <button  type="submit">登录</button>
+                <a href="regist.html">注册</a>
+            </form>
+          </fieldset>
+        </div>
+</body>  
+</html>  
