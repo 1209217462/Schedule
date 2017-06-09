@@ -61,35 +61,16 @@
         </thead>
         <tbody>
             {% for r in RecordList %}
-                <!-- tr -->
-    {#            {% if todo.status %}<tr>#}
-    {#            {% else %} <tr > #}
-    {#            {% endif %}#}
                 <tr>
                     <td>{{ loop.index }}</td>
                     <td>{{ r[2] }}</td>
-    {#                <td>{{ r.create_time }}</td>#}
                     <td>{{ r[3] }}</td>
-
                     <td >
-                        <input type="text" style="text-align:center;"  onfocus='this.value=isExpire()'>
-{#                        {% if r[4]%}#}
-{#                            已到期#}
-{#                        {% else %}#}
-{#                            未到期#}
-{#                        {% endif %}#}
+                        <input type="text" style="text-align:center;"  onfocus='this.value=isExpire("{{ r[3] }}")'>
                     </td>
-
                     <td>
                         <a href="{{ url_for('deleteRecord',id=r[0]) }}" role="button">删除</a>
-    {#                    <a href="{{ url_for('deleteRecord',id=r.id) }}" role="button">删除</a>#}
-    {#                    {% if r.state %}#}
-    {#                    <a href="{{ url_for('deleteRecord', id=todo.id) }}" class="btn btn-danger" role ="button">删除</a>#}
-    {#                    {% else %}#}
-    {#                    <a href="{{ url_for('changeRecord', id=todo.id) }}" class="btn btn-success" role ="button">修改</a>#}
-    {#                    {% endif %}#}
                     </td>
-
                 </tr>
             {% endfor %}
 
