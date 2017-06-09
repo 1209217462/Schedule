@@ -26,9 +26,14 @@
             if (isback==1)
                 window.alert("用户名或密码错误!");
         }
+        function queryError() {
+            var queryError=document.getElementById("queryError").innerText;
+            if (queryError==1)
+                window.alert("数据库查询错误！");
+        }
     </script>
 </head>  
-<body onload="isBack()">
+<body onload="isBack();queryError()">
         <div class="wrap">
             <img src="../static/clock.jpg" alt="some_text">
           <h1 align="center">日程管理</h1>
@@ -42,6 +47,7 @@
                   <button  type="submit">注册</button>
               </form>
               <p id="isback" hidden>{{isback}}</p>
+              <p id="queryError" hidden>{{queryError}}</p>
           </fieldset>
         </div>
 </body>  

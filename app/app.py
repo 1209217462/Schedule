@@ -16,7 +16,7 @@ scheduler=BackgroundScheduler()
 
 import pymysql
 # 打开数据库连接
-conn = pymysql.connect(host='localhost', user='root', passwd='root', db='schedule', port=3306,charset='utf8mb4')
+# conn = pymysql.connect(host='localhost', user='root', passwd='root', db='schedule', port=3306,charset='utf8mb4')
 #mysql数据库
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:root@127.0.0.1/schedule?charset=utf8'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -64,13 +64,20 @@ def show():
         print(session['username'])
         sql = 'select * from record where username = \''+session['username']+'\''
         print(sql)
+        #建立数据库连接
+        conn = pymysql.connect(host='localhost', user='root', passwd='root', db='schedule', port=3306,
+                               charset='utf8mb4')
         cur = conn.cursor()  # 使用cursor()方法获取操作游标
         try:
             cur.execute(sql)  # 执行sql语句
             results = cur.fetchall()
             conn.commit()
+            cur.close()
+            conn.close()
         except:
+            conn.rollback()
             print("Error: unable to fecth data")
+            return render_template('login.html', queryError=1)
         return render_template("main.html",username=session['username'],RecordList=results)
     else:
         print('logined is false')
@@ -131,8 +138,6 @@ def regist():
     db.session.add(user)
     db.session.commit()
     print('注册成功！')
-    print(url_for('login'))
-    # return redirect(url_for('login'))
     return render_template("login.html")
 #插入记录
 # record=Record('1209217462@qq.com','起床',0,'2017-06-03 22:00:00')
