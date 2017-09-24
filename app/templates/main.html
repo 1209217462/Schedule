@@ -64,9 +64,9 @@
                 <tr>
                     <td>{{ loop.index }}</td>
                     <td>{{ r[2] }}</td>
-                    <td>{{ r[3] }}</td>
+                    <td>{{ r[4] }}</td>
                     <td >
-                        <input type="text" style="text-align:center;"  onfocus='this.value=isExpire("{{ r[3] }}")'>
+                        <input type="text" style="text-align:center;"  onfocus='this.value=isExpire("{{ r[4] }}")'>
                     </td>
                     <td>
                         <a href="{{ url_for('deleteRecord',id=r[0]) }}" role="button">删除</a>
